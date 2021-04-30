@@ -1,0 +1,16 @@
+.not-found {
+    padding: 40px 20px;
+    text-align: center;
+    h1 {
+        font-size: 60px;
+        font-weight: normal;
+        &.four-zero-four {
+            margin-top: 10px;
+            font-size: 72px;
+            font-weight: bold;
+        }
+    }
+    p {
+        margin: 20px 0 30px 0;
+    }
+}

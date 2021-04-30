@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch,
+    Redirect,
+} from "react-router-dom";
+import Welcome from "./views/Welcome";
+import Chatroom from "./views/Chatroom";
+import NotFound from "./views/NotFound";
+import { projectAuth } from "./firebase/config";
+import { useState, useEffect } from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        setUser(projectAuth.currentUser);
+    });
+
+    const updateUser = () => {
+        if (projectAuth.currentUser) {
+            setUser({
+                ...projectAuth.currentUser,
+                displayName: projectAuth.currentUser.displayName,
+            });
+        }
+    };
+
+    return (
+        <Router>
+            <div className="App"></div>
+            <Switch>
+                <Route exact path="/">
+                    {!user ? (
+                        <Welcome updateUser={updateUser} />
+                    ) : (
+                        <Redirect to={"/chatroom"} />
+                    )}
+                </Route>
+                <Route path="/chatroom">
+                    {user ? <Chatroom user={user} /> : <Redirect to="/" />}
+                </Route>
+                <Route path="*">
+                    <NotFound />
+                </Route>
+            </Switch>
+        </Router>
+    );
 }
 
 export default App;

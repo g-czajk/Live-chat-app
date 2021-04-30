@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: map-get($colors, background-c);
+    font-family: $font-family;
+    color: map-get($colors, font);
+}
+.container {
+    width: 90%;
+    max-width: 960px;
+    margin: 80px auto 0 auto;
+    border-radius: 20px;
+    box-shadow: 2px 4px 6px rgba(28, 6, 49, 0.1);
+    background: white;
+}
+.error {
+    color: map-get($colors, error);
+    font-size: 14px;
+}
+button {
+    font-family: $font-family;
+    text-decoration: none;
+    background: map-get($colors, button);
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    border: 0;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+}

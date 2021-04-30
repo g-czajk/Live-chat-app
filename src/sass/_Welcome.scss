@@ -1,0 +1,53 @@
+.welcome {
+    text-align: center;
+    padding: 20px 0;
+    form {
+        width: 300px;
+        margin: 20px auto;
+    }
+    input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        outline: none;
+        color: map-get($colors, font);
+        margin: 10px auto;
+        font-family: $font-family;
+        &[type="checkbox"] {
+            align-self: flex-start;
+            width: auto;
+            margin: 0 10px 0 0;
+            text-align: left;
+            cursor: pointer;
+        }
+        &:focus {
+            border: 1px solid #999;
+        }
+    }
+    .checkbox-wrap {
+        margin: 10px auto;
+        display: flex;
+        align-items: center;
+        label {
+            font-size: 14px;
+            text-align: left;
+        }
+    }
+
+    h1 {
+        margin-top: 10px;
+        font-weight: 300;
+    }
+    h2 {
+        margin-top: 20px;
+    }
+    span {
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    button {
+        margin: 20px auto;
+    }
+}
