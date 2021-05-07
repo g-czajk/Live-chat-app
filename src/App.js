@@ -15,7 +15,7 @@ function App() {
 
     useEffect(() => {
         setUser(projectAuth.currentUser);
-    });
+    }, [projectAuth.currentUser]);
 
     const updateUser = () => {
         if (projectAuth.currentUser) {
@@ -28,22 +28,23 @@ function App() {
 
     return (
         <Router>
-            <div className="App"></div>
-            <Switch>
-                <Route exact path="/">
-                    {!user ? (
-                        <Welcome updateUser={updateUser} />
-                    ) : (
-                        <Redirect to={"/chatroom"} />
-                    )}
-                </Route>
-                <Route path="/chatroom">
-                    {user ? <Chatroom user={user} /> : <Redirect to="/" />}
-                </Route>
-                <Route path="*">
-                    <NotFound />
-                </Route>
-            </Switch>
+            <div className="App">
+                <Switch>
+                    <Route exact path="/">
+                        {!user ? (
+                            <Welcome updateUser={updateUser} />
+                        ) : (
+                            <Redirect to={"/chatroom"} />
+                        )}
+                    </Route>
+                    <Route path="/chatroom">
+                        {user ? <Chatroom user={user} /> : <Redirect to="/" />}
+                    </Route>
+                    <Route path="*">
+                        <NotFound />
+                    </Route>
+                </Switch>
+            </div>
         </Router>
     );
 }
