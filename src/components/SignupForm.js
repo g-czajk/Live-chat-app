@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
+import { projectAuth } from "../firebase/config";
 import useSignup from "../hooks/useSignup";
+
+import { connect } from "react-redux";
+import { trackUser } from "../actions/appActions";
 
 const SignupForm = (props) => {
     const { error, signup } = useSignup();
@@ -12,13 +16,22 @@ const SignupForm = (props) => {
     const [checkbox, setCheckbox] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const updateUser = props.updateUser;
-
     useEffect(() => {
         if (error) {
             setIsLoading(false);
         }
     }, [error]);
+
+    const updateUser = () => {
+        const user = projectAuth.currentUser;
+        if (user) {
+            props.trackUser({
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName,
+            });
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -96,4 +109,12 @@ const SignupForm = (props) => {
     );
 };
 
-export default SignupForm;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        trackUser: ({ uid, email, displayName }) => {
+            dispatch(trackUser({ uid, email, displayName }));
+        },
+    };
+};
+
+export default connect(null, mapDispatchToProps)(SignupForm);

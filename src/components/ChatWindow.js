@@ -36,7 +36,7 @@ const ChatWindow = () => {
     };
 
     useEffect(() => {
-        getCollection("messages");
+        getCollection("testMessages");
     }, []);
 
     useEffect(() => {

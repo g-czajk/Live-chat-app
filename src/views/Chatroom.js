@@ -1,13 +1,19 @@
 import Navbar from "../components/Navbar";
 import ChatWindow from "../components/ChatWindow";
 import ChatForm from "../components/ChatForm";
+import ChatroomsPanel from "../components/ChatroomsPanel";
+import UsersPanel from "../components/UsersPanel";
 
-const Chatroom = (props) => {
+const Chatroom = () => {
     return (
         <div className="container">
-            <Navbar user={props.user} />
-            <ChatWindow />
-            <ChatForm user={props.user} />
+            <div className="chatroom">
+                <Navbar />
+                <ChatroomsPanel />
+                <UsersPanel />
+                <ChatWindow />
+                <ChatForm />
+            </div>
         </div>
     );
 };

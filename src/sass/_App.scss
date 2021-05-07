@@ -12,8 +12,7 @@ body {
     color: map-get($colors, font);
 }
 .container {
-    width: 90%;
-    max-width: 960px;
+    width: 960px;
     margin: 80px auto 0 auto;
     border-radius: 20px;
     box-shadow: 2px 4px 6px rgba(28, 6, 49, 0.1);
@@ -23,6 +22,28 @@ body {
     color: map-get($colors, error);
     font-size: 14px;
 }
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+    color: map-get($colors, font);
+    margin: 10px auto;
+    font-family: $font-family;
+    &[type="checkbox"] {
+        align-self: flex-start;
+        width: auto;
+        margin: 0 10px 0 0;
+        text-align: left;
+        cursor: pointer;
+    }
+    &:focus {
+        border: 1px solid #999;
+    }
+}
+
 button {
     font-family: $font-family;
     text-decoration: none;

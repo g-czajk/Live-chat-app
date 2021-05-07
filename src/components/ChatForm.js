@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { timestamp } from "../firebase/config";
-import useCollection from "../hooks/useCollection";
+import useSendMessage from "../hooks/useSendMessage";
 
-const ChatForm = (props) => {
-    const user = props.user;
-    const { addDoc, error } = useCollection("messages");
+const ChatForm = () => {
+    const user = useSelector((store) => store.user);
+    const { addDoc, error } = useSendMessage("testMessages");
 
     const [message, setMessage] = useState("");
     const [isSending, setIsSending] = useState(false);
@@ -16,21 +17,27 @@ const ChatForm = (props) => {
 
     const handleSubmit = async (e) => {
         if (e.key === "Enter") {
-            setIsSending(true);
-
             const chat = {
                 name: user.displayName,
                 message: message,
                 createdAt: timestamp(),
             };
 
-            setMessage("");
-            textarea.current.blur();
+            if (message) {
+                setIsSending(true);
+                setMessage("");
+                textarea.current.blur();
 
-            await addDoc(chat);
+                await addDoc(chat);
 
-            textarea.current.focus();
-            setIsSending(false);
+                textarea.current.focus();
+                setIsSending(false);
+            } else {
+                textarea.current.blur();
+                setTimeout(() => {
+                    textarea.current.focus();
+                }, 0);
+            }
         }
     };
 

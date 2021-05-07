@@ -1,21 +1,24 @@
 .chat-window {
+    grid-column: 2/-1;
+    grid-row: 3/4;
     background: #fafafa;
     padding: 30px 20px;
-}
-.single {
-    margin: 18px 0;
-}
-.created-at {
-    display: block;
-    color: #999;
-    font-size: 12px;
-    margin-bottom: 4px;
-}
-.name {
-    font-weight: bold;
-    margin-right: 6px;
-}
-.messages {
-    max-height: 400px;
-    overflow: auto;
+    max-height: 340px;
+    .single {
+        margin: 18px 0;
+    }
+    .created-at {
+        display: block;
+        color: #999;
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+    .name {
+        font-weight: bold;
+        margin-right: 6px;
+    }
+    .messages {
+        max-height: 100%;
+        overflow: auto;
+    }
 }

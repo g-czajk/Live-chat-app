@@ -1,0 +1,20 @@
+.users-panel {
+    grid-column: 2/-1;
+    grid-column: 2/3;
+    height: 120px;
+    border-bottom: 1px solid #eee;
+    padding: 20px 20px 10px 20px;
+    .current-chatroom {
+        padding-bottom: 16px;
+        text-align: center;
+        span {
+            color: map-get($colors, button);
+            font-weight: bold;
+        }
+    }
+    .users-panel-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
