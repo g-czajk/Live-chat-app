@@ -2,10 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { timestamp } from "../firebase/config";
 import useSendMessage from "../hooks/useSendMessage";
+import { v4 as uuidv4 } from "uuid";
 
 const ChatForm = () => {
     const user = useSelector((store) => store.user);
-    const { addDoc, error } = useSendMessage("testMessages");
+    const currentChatroom = useSelector((store) => store.currentChatroom);
+    const { addMessage, error } = useSendMessage();
 
     const [message, setMessage] = useState("");
     const [isSending, setIsSending] = useState(false);
@@ -13,22 +15,29 @@ const ChatForm = () => {
 
     useEffect(() => {
         textarea.current.focus();
-    }, []);
+    }, [currentChatroom]);
 
     const handleSubmit = async (e) => {
         if (e.key === "Enter") {
-            const chat = {
-                name: user.displayName,
-                message: message,
-                createdAt: timestamp(),
-            };
-
             if (message) {
+                e.preventDefault();
                 setIsSending(true);
+
+                const uuid = uuidv4();
+
+                const chatMessage = {};
+
+                chatMessage[uuid] = {
+                    id: uuid,
+                    sentBy: user.displayName,
+                    message,
+                    sentAt: timestamp(),
+                };
+
                 setMessage("");
                 textarea.current.blur();
 
-                await addDoc(chat);
+                await addMessage(chatMessage, currentChatroom);
 
                 textarea.current.focus();
                 setIsSending(false);
@@ -55,8 +64,9 @@ const ChatForm = () => {
                 onKeyPress={(e) => {
                     handleSubmit(e);
                 }}
+                disabled={!currentChatroom}
             ></textarea>
-            <div className="error">{error}</div>
+            {error && <div className="error">{error}</div>}
         </form>
     );
 };

@@ -13,5 +13,11 @@
         font-family: inherit;
         outline: none;
         resize: none;
+        &:disabled {
+            background-color: #ffffff;
+        }
+    }
+    .error {
+        transform: translateY(-100%);
     }
 }

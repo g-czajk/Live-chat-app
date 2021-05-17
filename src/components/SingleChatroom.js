@@ -1,10 +1,42 @@
-const SingleChatroom = () => {
+import { useEffect } from "react";
+import { connect, useSelector } from "react-redux";
+import { selectCurrentChatroom } from "../actions/appActions";
+
+const SingleChatroom = (props) => {
+    const name = props.data.name;
+    const description = props.data.description;
+    const id = props.data.id;
+    const user = useSelector((store) => store.user);
+    const currentChatroom = useSelector((store) => store.currentChatroom);
+
+    const handleClick = () => {
+        props.selectCurrentChatroom(id, user.uid);
+    };
+
+    useEffect(() => {
+        if (currentChatroom) {
+            const chatBars = document.querySelectorAll(".single-chatroom");
+            chatBars.forEach((bar) => {
+                bar.classList.remove("current");
+            });
+            document.getElementById(currentChatroom).classList.add("current");
+        }
+    }, [currentChatroom]);
+
     return (
-        <div className="single-chatroom">
-            <p className="chatroom-name">Chatroom 1</p>
-            <p className="chatroom-description">Chatroom description... </p>
+        <div id={id} className="single-chatroom" onClick={handleClick}>
+            <p className="chatroom-name">{name}</p>
+            <p className="chatroom-description">{description}</p>
         </div>
     );
 };
 
-export default SingleChatroom;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        selectCurrentChatroom: (id, user) => {
+            dispatch(selectCurrentChatroom(id, user));
+        },
+    };
+};
+
+export default connect(null, mapDispatchToProps)(SingleChatroom);

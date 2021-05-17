@@ -1,6 +1,11 @@
 .single-chatroom {
+    margin-right: 20px;
+    border-radius: 12px;
     padding: 10px;
     cursor: pointer;
+    &.current {
+        background-color: #efefef;
+    }
     .chatroom-name {
         max-width: 210px;
         margin-bottom: 6px;

@@ -1,28 +1,32 @@
 import { useState, useEffect, useRef } from "react";
 import { format } from "date-fns";
 import { projectFirestore } from "../firebase/config";
+import { useSelector } from "react-redux";
 
 const ChatWindow = () => {
-    const chat = useRef(null);
+    const currentChatroom = useSelector((store) => store.currentChatroom);
+    const chatWindow = useRef(null);
     const [documents, setDocuments] = useState(null);
     const [formattedDocuments, setFormattedDocuments] = useState(null);
     const [error, setError] = useState(null);
-    let unsubscribe;
+    const [unsubscribe, setUnsubscribe] = useState(null);
 
-    const getCollection = (collection) => {
+    const getMessages = (chatroom) => {
         let collectionRef = projectFirestore
-            .collection(collection)
-            .orderBy("createdAt");
+            .collection("chatroomMessages")
+            .doc(chatroom);
 
-        unsubscribe = collectionRef.onSnapshot(
+        const unsubscribe = collectionRef.onSnapshot(
             (snap) => {
                 let results = [];
-                snap.docs.forEach((doc) => {
-                    doc.data().createdAt &&
+                for (let message in snap.data()) {
+                    snap.data()[message].sentAt &&
                         results.push({
-                            ...doc.data(),
-                            id: doc.id,
+                            ...snap.data()[message],
                         });
+                }
+                results.sort((a, b) => {
+                    return a.sentAt - b.sentAt;
                 });
                 setDocuments(results);
                 setError(null);
@@ -33,17 +37,18 @@ const ChatWindow = () => {
                 setError("could not load data");
             }
         );
+        setUnsubscribe(() => unsubscribe);
     };
 
     useEffect(() => {
-        getCollection("testMessages");
-    }, []);
+        if (currentChatroom) getMessages(currentChatroom);
+    }, [currentChatroom]);
 
     useEffect(() => {
         if (documents) {
             const formattedDocuments = documents.map((doc) => {
-                let time = format(doc.createdAt.toDate(), "Pp");
-                return { ...doc, createdAt: time };
+                let time = format(doc.sentAt.toDate(), "PPpp");
+                return { ...doc, sentAt: time };
             });
             setFormattedDocuments(formattedDocuments);
         }
@@ -51,8 +56,8 @@ const ChatWindow = () => {
 
     useEffect(() => {
         if (formattedDocuments) {
-            const chatWindow = chat.current;
-            chatWindow.scrollTop = chatWindow.scrollHeight;
+            const chat = chatWindow.current;
+            chat.scrollTop = chat.scrollHeight;
         }
     }, [formattedDocuments]);
 
@@ -66,11 +71,11 @@ const ChatWindow = () => {
         <div className="chat-window">
             {error && <div className="error">{error}</div>}
             {formattedDocuments && (
-                <div className="messages" ref={chat}>
+                <div className="messages" ref={chatWindow}>
                     {formattedDocuments.map((doc) => (
                         <div className="single" key={doc.id}>
-                            <span className="created-at">{doc.createdAt}</span>
-                            <span className="name">{doc.name}</span>
+                            <span className="created-at">{doc.sentAt}</span>
+                            <span className="name">{doc.sentBy}</span>
                             <span className="message">{doc.message}</span>
                         </div>
                     ))}

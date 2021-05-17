@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { projectAuth } from "../firebase/config";
+import { projectAuth, projectFirestore, timestamp } from "../firebase/config";
 
 const useSignup = () => {
     const regex = new RegExp(/^[a-zA-Z0-9.\-_$@*!]{3,16}$/);
@@ -14,11 +14,21 @@ const useSignup = () => {
                     email,
                     password
                 );
+
                 if (!res) {
                     throw new Error("Could not complete the signup");
                 }
 
                 await res.user.updateProfile({ displayName });
+                await projectFirestore
+                    .collection("users")
+                    .doc(res.user.uid)
+                    .set({
+                        displayName,
+                        chatrooms: [],
+                        lastVisited: null,
+                        createdAt: timestamp(),
+                    });
                 return res;
             } else {
                 throw new Error(
