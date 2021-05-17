@@ -10,7 +10,6 @@ export const appReducer = (
         case SELECT_CURRENT_CHATROOM:
             return { ...state, currentChatroom: action.payload };
         default:
-            console.warn(`No action of type: ${action.type}`);
             return state;
     }
 };
