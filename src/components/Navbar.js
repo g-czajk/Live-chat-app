@@ -1,8 +1,9 @@
 import useLogout from "../hooks/useLogout";
+import { useSelector } from "react-redux";
 
-const Navbar = (props) => {
+const Navbar = () => {
     const { logout, error } = useLogout();
-    const user = props.user;
+    const user = useSelector((store) => store.user);
 
     const handleLogout = async () => {
         await logout();

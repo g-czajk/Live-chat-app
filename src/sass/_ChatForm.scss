@@ -1,4 +1,6 @@
 .chat-form {
+    grid-column: 2/-1;
+    grid-row: 4/5;
     margin: 10px;
     textarea {
         width: 100%;
@@ -11,5 +13,11 @@
         font-family: inherit;
         outline: none;
         resize: none;
+        &:disabled {
+            background-color: #ffffff;
+        }
+    }
+    .error {
+        transform: translateY(-100%);
     }
 }

@@ -1,0 +1,9 @@
+.chatrooms-list {
+    grid-row: 2/-1;
+    height: 370px;
+    padding: 10px 0;
+    overflow: auto;
+    .error {
+        text-align: center;
+    }
+}

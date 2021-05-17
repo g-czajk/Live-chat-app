@@ -1,0 +1,28 @@
+.users-list {
+    flex-basis: 65%;
+    max-width: 65%;
+    height: 100%;
+    font-size: 14px;
+    .title {
+        font-weight: 500;
+    }
+    .users {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-height: 40px;
+        overflow: auto;
+        .user {
+            border: 1px solid #ccc;
+            margin-right: 6px;
+            border-radius: 12px;
+            padding: 3px 10px;
+            font-size: 14px;
+            color: #999;
+            &.online {
+                color: map-get($colors, button);
+                font-weight: bold;
+            }
+        }
+    }
+}

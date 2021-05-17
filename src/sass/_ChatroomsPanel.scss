@@ -1,0 +1,21 @@
+.chatrooms-panel {
+    grid-column: 1/2;
+    grid-row: 2/-1;
+    display: grid;
+    grid-template-rows: 100px auto;
+    border-right: 1px solid #eee;
+    border-bottom-left-radius: 20px;
+    padding: 20px;
+    .your-chatrooms {
+        padding: 7px 0;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+    }
+    button {
+        align-self: center;
+        justify-self: center;
+        grid-row: 1/2;
+        width: 60%;
+    }
+}

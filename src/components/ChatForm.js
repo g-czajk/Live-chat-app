@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { timestamp } from "../firebase/config";
-import useCollection from "../hooks/useCollection";
+import useSendMessage from "../hooks/useSendMessage";
+import { v4 as uuidv4 } from "uuid";
 
-const ChatForm = (props) => {
-    const user = props.user;
-    const { addDoc, error } = useCollection("messages");
+const ChatForm = () => {
+    const user = useSelector((store) => store.user);
+    const currentChatroom = useSelector((store) => store.currentChatroom);
+    const { addMessage, error } = useSendMessage();
 
     const [message, setMessage] = useState("");
     const [isSending, setIsSending] = useState(false);
@@ -12,25 +15,38 @@ const ChatForm = (props) => {
 
     useEffect(() => {
         textarea.current.focus();
-    }, []);
+    }, [currentChatroom]);
 
     const handleSubmit = async (e) => {
         if (e.key === "Enter") {
-            setIsSending(true);
+            if (message) {
+                e.preventDefault();
+                setIsSending(true);
 
-            const chat = {
-                name: user.displayName,
-                message: message,
-                createdAt: timestamp(),
-            };
+                const uuid = uuidv4();
 
-            setMessage("");
-            textarea.current.blur();
+                const chatMessage = {};
 
-            await addDoc(chat);
+                chatMessage[uuid] = {
+                    id: uuid,
+                    sentBy: user.displayName,
+                    message,
+                    sentAt: timestamp(),
+                };
 
-            textarea.current.focus();
-            setIsSending(false);
+                setMessage("");
+                textarea.current.blur();
+
+                await addMessage(chatMessage, currentChatroom);
+
+                textarea.current.focus();
+                setIsSending(false);
+            } else {
+                textarea.current.blur();
+                setTimeout(() => {
+                    textarea.current.focus();
+                }, 0);
+            }
         }
     };
 
@@ -48,8 +64,9 @@ const ChatForm = (props) => {
                 onKeyPress={(e) => {
                     handleSubmit(e);
                 }}
+                disabled={!currentChatroom}
             ></textarea>
-            <div className="error">{error}</div>
+            {error && <div className="error">{error}</div>}
         </form>
     );
 };

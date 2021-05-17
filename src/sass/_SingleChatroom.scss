@@ -1,0 +1,23 @@
+.single-chatroom {
+    margin-right: 20px;
+    border-radius: 12px;
+    padding: 10px;
+    cursor: pointer;
+    &.current {
+        background-color: #efefef;
+    }
+    .chatroom-name {
+        max-width: 210px;
+        margin-bottom: 6px;
+        color: map-get($colors, button);
+        font-weight: bold;
+        word-wrap: break-word;
+    }
+    .chatroom-description {
+        max-width: 210px;
+        font-size: 14px;
+        color: #999;
+        font-style: italic;
+        word-wrap: break-word;
+    }
+}

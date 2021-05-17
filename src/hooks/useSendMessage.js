@@ -1,19 +1,23 @@
 import { useState } from "react";
 import { projectFirestore } from "../firebase/config";
 
-const useCollection = (collection) => {
+const useSendMessage = () => {
     const [error, setError] = useState(null);
 
-    const addDoc = async (doc) => {
+    const addMessage = async (message, chatroom) => {
         setError(null);
+
         try {
-            await projectFirestore.collection(collection).add(doc);
+            await projectFirestore
+                .collection("chatroomMessages")
+                .doc(chatroom)
+                .update(message);
         } catch (err) {
             console.log(err.message);
             setError("Could not send the message");
         }
     };
-    return { error, addDoc };
+    return { error, addMessage };
 };
 
-export default useCollection;
+export default useSendMessage;
